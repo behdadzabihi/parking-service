@@ -1,0 +1,44 @@
+#version: '3.8'
+#
+#services:
+#  postgres:
+#    image: postgres:16-alpine
+#    container_name: parking-db
+#    environment:
+#      POSTGRES_DB: parking_db
+#      POSTGRES_USER: parking_user
+#      POSTGRES_PASSWORD: parking_password
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U parking_user"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#
+#  parking-api:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: parking-api
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: postgres
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/parking_db
+#      SPRING_DATASOURCE_USERNAME: parking_user
+#      SPRING_DATASOURCE_PASSWORD: parking_password
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:8080/api/spots"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#
+#volumes:
+#  postgres_data:
+#    driver: local
