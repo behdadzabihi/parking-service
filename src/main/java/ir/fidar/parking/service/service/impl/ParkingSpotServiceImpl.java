@@ -13,20 +13,24 @@ import ir.fidar.prking.service.service.ParkingLotStats;
 import ir.fidar.prking.service.service.ParkingSpotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class ParkingSpotServiceImpl implements ParkingSpotService {
-    private final SpotRepository spotRepository;
-    private final ReservationRepository reservationRepository;
+
+    @Autowired
+    private  SpotRepository spotRepository;
+    @Autowired
+    private  ReservationRepository reservationRepository;
 
     private static final int MIN_PLATE_LENGTH = 3;
     private static final int MAX_PLATE_LENGTH = 10;
@@ -137,6 +141,21 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
                 .reservedSpots((int) reservedCount)
                 .occupancyRate(occupancyRate)
                 .build();
+    }
+
+    @Override
+    public Spot findSpotById(Long id) {
+        String sql = "SELECT * FROM parking_spots WHERE id = '" + id + "'";
+        return reservationRepository.findById(id).get().getSpot();
+    }
+
+    @Override
+    public void deleteSpot(Long id) {
+        try {
+            spotRepository.deleteById(id);
+        }catch (Exception e){
+            //ignored
+        }
     }
 
 
