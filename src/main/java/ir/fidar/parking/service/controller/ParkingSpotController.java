@@ -13,6 +13,7 @@ import ir.fidar.parking.service.mapper.SpotMapper;
 import ir.fidar.prking.service.service.ParkingSpotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,13 +26,15 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/spots")
-@RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Parking Spots", description = "APIs for managing parking spots and reservations")
 public class ParkingSpotController {
-    private final ParkingSpotService parkingSpotService;
-    private final SpotMapper spotMapper;
-    private final PaginationMapper paginationMapper;
+    @Autowired
+    private  ParkingSpotService parkingSpotService;
+    @Autowired
+    private  SpotMapper spotMapper;
+    @Autowired
+    private  PaginationMapper paginationMapper;
 
     @GetMapping
     @Operation(
